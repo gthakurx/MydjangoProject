@@ -30,7 +30,7 @@ def users(request:HttpRequest) -> HttpResponse:
 
             #return HttpResponse(users) this will have the Objects not the plain Txt 
             # we need to chnage that so serialize is used 
-        serialized_users = [ user.name for user in users]
+        serialized_users = [ {user.name:user.id} for user in users]
             # return HttpResponse(serialized_users) this still a object not a string 
 
             #inport jason 
