@@ -16,7 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from ecom.views import UserListCreateAPIView 
+from ecom.views import UserRetrieveUpdateDestroyAPIView
+from ecom.views import ShippingAddressListCreateAPIView
 
 urlpatterns = [
+    path('user/',  UserListCreateAPIView.as_view()),
+    path('user/<int:pk>', UserRetrieveUpdateDestroyAPIView.as_view()),
+    path('user/<int:user_id>/shipping/', ShippingAddressListCreateAPIView.as_view()),
     path('admin/', admin.site.urls),
 ]
