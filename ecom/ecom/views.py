@@ -1,4 +1,5 @@
 from rest_framework.generics import ListCreateAPIView
+from rest_framework.views import APIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response 
 
@@ -8,10 +9,23 @@ from ecom.Serializers import UserSerializer , ShippingAddressSerializer,CreateSh
 from django.shortcuts import get_object_or_404
 
 
-class UserListCreateAPIView(ListCreateAPIView):
+class UserListCreateAPIView(APIView):
 
-    queryset=User.objects.all()
-    serializer_class= UserSerializer
+    # queryset=User.objects.all()
+    # serializer_class= UserSerializer
+    # Creating API for get and post 
+
+    def get(self,request):
+        users=User.objects.all().prefetch_related("shipping_address")
+        return Response(UserSerializer(users,many=True).data)
+
+    def post(self,request):
+        serialized=UserSerializer(data=request.data)
+        if not serialized.is_valid():
+            return Response(serialized.errors,status=400)
+        serialized.save()
+        return Response(serialized.data,status=201)
+
 
 class UserRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     queryset=User.objects.all()
