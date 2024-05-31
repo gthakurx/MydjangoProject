@@ -19,11 +19,13 @@ from django.urls import include , path
 from ecom.views import UserListCreateAPIView 
 from ecom.views import UserRetrieveUpdateDestroyAPIView
 from ecom.views import ShippingAddressListCreateAPIView
+from ecom.views import SetDefaultShippingAddress
 
 urlpatterns = [
     path('user/',  UserListCreateAPIView.as_view()),
     path('user/<int:pk>', UserRetrieveUpdateDestroyAPIView.as_view()),
     path('user/<int:user_id>/shipping/', ShippingAddressListCreateAPIView.as_view()),
+    path('user/<int:user_id>/<int:address_id>/shipping_add/', SetDefaultShippingAddress.as_view()),
     path('admin/', admin.site.urls),
     path("__debug__/", include("debug_toolbar.urls")),
 ]

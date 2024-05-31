@@ -16,7 +16,7 @@ class UserListCreateAPIView(APIView):
     # Creating API for get and post 
 
     def get(self,request):
-        users=User.objects.all().prefetch_related("shipping_address")
+        users=User.objects.all().prefetch_related("shipping_address").select_related("default_shipping_address")
         return Response(UserSerializer(users,many=True).data)
 
     def post(self,request):
@@ -50,3 +50,13 @@ class ShippingAddressListCreateAPIView(ListCreateAPIView):
         shipping_address.save()
 
         return Response(ShippingAddressSerializer(shipping_address).data,status=201)
+
+class   SetDefaultShippingAddress(APIView):
+    def patch(self,request,user_id,address_id):
+
+        user=get_object_or_404(User,pk=user_id)
+        address=get_object_or_404(Shipping_Address,user_id=user_id,pk=address_id)
+        user.default_shipping_address=address
+
+        user.save()
+        return Response(UserSerializer(user).data,200)

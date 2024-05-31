@@ -8,6 +8,11 @@ class User(models.Model):
     # billing_address=models.TextField()
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
+    default_shipping_address=models.ForeignKey(
+        "Shipping_Address",
+        on_delete=models.DO_NOTHING,
+        null=True,
+        related_query_name='user_info')
 
     def __str__(self) -> str:
         return self.name
